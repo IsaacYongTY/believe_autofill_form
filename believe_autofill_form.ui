@@ -3,68 +3,57 @@
  <class>main</class>
  <widget class="QMainWindow" name="main">
   <property name="enabled">
-   <bool>false</bool>
+   <bool>true</bool>
   </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1154</width>
-    <height>789</height>
+    <width>446</width>
+    <height>235</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Believe Digital Autofill Form</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QLineEdit" name="release_number_input">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>190</y>
-      <width>131</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="statusTip">
-     <string/>
-    </property>
-    <property name="accessibleName">
-     <string>sas</string>
-    </property>
-    <property name="text">
-     <string>Open Window 
-and Login</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>310</y>
+      <x>60</x>
+      <y>60</y>
       <width>151</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>290</y>
-      <width>121</width>
-      <height>16</height>
+      <x>60</x>
+      <y>40</y>
+      <width>221</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Release Number:</string>
+     <string>Release Number: (e.g. 3720803)</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="push_button">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>380</y>
+      <x>60</x>
+      <y>110</y>
       <width>111</width>
       <height>51</height>
      </rect>
@@ -73,17 +62,35 @@ and Login</string>
      <string/>
     </property>
     <property name="accessibleName">
-     <string>sas</string>
+     <string/>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid gray;
+border-radius: 10px;
+background-color: lightblue;
+</string>
     </property>
     <property name="text">
      <string>Execute</string>
     </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
    </widget>
    <widget class="QCheckBox" name="checkBox">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>390</y>
+      <x>220</x>
+      <y>120</y>
       <width>87</width>
       <height>20</height>
      </rect>
@@ -92,22 +99,48 @@ and Login</string>
      <string>Overwrite?</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1154</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
+   <widget class="QCheckBox" name="is_save">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>140</y>
+      <width>161</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save after execution?</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
-   <addaction name="menuFile"/>
+   <widget class="QLabel" name="message">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>170</y>
+      <width>331</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="exit_button">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>60</y>
+      <width>91</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Exit</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
