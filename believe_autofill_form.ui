@@ -9,18 +9,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>446</width>
-    <height>235</height>
+    <width>456</width>
+    <height>246</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Believe Digital Autofill Form</string>
   </property>
   <property name="autoFillBackground">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLineEdit" name="release_number_input">
+   <widget class="QLineEdit" name="releaseNumberInput">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -33,7 +33,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="releaseNumberLabel">
     <property name="geometry">
      <rect>
       <x>60</x>
@@ -46,7 +46,7 @@
      <string>Release Number: (e.g. 3720803)</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="push_button">
+   <widget class="QPushButton" name="executeButton">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -99,7 +99,7 @@ background-color: lightblue;
      <string>Overwrite?</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="is_save">
+   <widget class="QCheckBox" name="isSave">
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -128,7 +128,7 @@ background-color: lightblue;
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="exit_button">
+   <widget class="QPushButton" name="exitButton">
     <property name="geometry">
      <rect>
       <x>290</x>

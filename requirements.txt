@@ -1,0 +1,8 @@
+altgraph==0.17
+macholib==1.14
+pyinstaller==4.1
+pyinstaller-hooks-contrib==2020.11
+PyQt5==5.15.2
+PyQt5-sip==12.8.1
+selenium==3.141.0
+urllib3==1.26.2
