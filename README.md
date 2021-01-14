@@ -21,6 +21,7 @@ I developed this script to aid in filling up repeated forms in Believe Backstage
 ## Current Release
 ### v1.1.0
   - Update code formatting
+  
 ## Previous Release
 ### v1.0.0
   - Redesign UI
