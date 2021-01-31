@@ -8,6 +8,7 @@ from PyQt5 import QtWidgets, uic
 import sys
 import os
 import csv
+from pathlib import Path
 
 class SocialMedia:
     def __init__(self, name, link, followers):
@@ -32,9 +33,12 @@ class Ui(QtWidgets.QMainWindow):
 
         self.relative_path = '.'
         self.directory = self.get_correct_path(self.relative_path)
-        uic.loadUi(f'{self.directory}/believe_autofill_form.ui', self)
+        uic.loadUi(f'{self.directory}/data/believe_autofill_form.ui', self)
 
-        CHROME_PATH = '/Users/isaacyong/chromedriver'
+        if sys.platform == 'darwin':
+            CHROME_PATH = Path('/Users/isaacyong/chromedriver')
+        elif sys.platform == 'win32':
+            CHROME_PATH = Path('C:/bin/chromedriver')
 
         self.driver = webdriver.Chrome(executable_path=CHROME_PATH)
         self.executeButton.clicked.connect(self.fill_form)
@@ -60,28 +64,24 @@ class Ui(QtWidgets.QMainWindow):
 
         result_array = []
 
-
-        with open(f'{self.directory}/social_media_stats.csv', 'r') as csv_file:
+        with open(f'{self.directory}/data/social_media_stats.csv', 'r') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
 
             next(csv_file, None)
             for row in csv_reader:
 
                 social_media_data = SocialMedia(row[0], row[1], row[2])
-
-                print(social_media_data)
-                print(social_media_data.id)
                 result_array.append(social_media_data)
 
         return result_array
 
     def login(self):
 
-        f = open(f'{self.directory}/1.txt', 'r')
+        f = open(f'{self.directory}/data/settings.txt', 'r')
         content = f.read()
 
-        self.username = content.split(',')[0]
-        self.password = content.split(',')[1]
+        username = content.split(',')[0]
+        password = content.split(',')[1]
 
         for x in range(2):
 
@@ -94,61 +94,71 @@ class Ui(QtWidgets.QMainWindow):
             login_input = self.driver.find_element_by_id('login')
             password_input = self.driver.find_element_by_id('password')
 
-            login_input.send_keys(self.username)
-            password_input.send_keys(self.password)
+            login_input.send_keys(username)
+            password_input.send_keys(password)
             password_input.send_keys(Keys.RETURN)
 
         self.driver.execute_script("window.open('https://believebackstage.com/catalog/manager', '_blank')")
 
     def navigate_to_release(self, release_number):
 
-            WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.CLASS_NAME, 'menuLabel'))
-            )
-            self.driver.get(f'https://believebackstage.com/easyentry/promotion/edit/{release_number}')
-
-    def fill_in_form(self):
-        WebDriverWait(self.driver, 100).until(
-            EC.presence_of_element_located((By.ID, 'linksFacebook'))
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, 'menuLabel'))
         )
 
-        english_textarea_class = self.driver.find_element_by_class_name('inputBehavior-2')
-        english_textarea_id = english_textarea_class.get_attribute('id')
-
-        id_number_only = int(english_textarea_id.split('-')[1])
-
-        english_textarea = self.driver.find_element_by_id((f'description-{id_number_only + 2}-easyEntryEditForm'))
-        chinese_textarea = self.driver.find_element_by_id(f'description-{id_number_only}-easyEntryEditForm')
-
-        english_textarea.clear()
-        chinese_textarea.clear()
-
-        english_textarea.send_keys('Isaac Yong is a singer-songwriter based in Singapore. He draws songwriting inspiration from stories around him, as well as through his personal experience. His voice is described as warm and soothing. Being a content creator, he also releases covers on various platforms, most notably through his style of combining singing with fingerstyle guitar, often playing different parts simultaneously with just one guitar.')
-        chinese_textarea.send_keys('杨征宇是来自新加坡的创作歌手。他的创作灵感来源于身边发生故事，也有的是源自于自己生活中的经历和情感。听众形容他”拥有一把温暖、让人觉得舒服的声音“。他也在各大不同的影音平台发行翻唱。他擅长把流行音乐结合指弹吉他，很多时候仅用一把吉他就能够弹唱时同时演奏多个声部。')
-
-        for platform in self.social_media_array:
-            self.driver.find_element_by_id(platform.id).clear()
-            self.driver.find_element_by_id(platform.followers_id).clear()
-            self.driver.find_element_by_id(platform.id).send_keys(platform.link)
-            self.driver.find_element_by_id(platform.followers_id).send_keys(platform.followers)
-
-        save_button = self.driver.find_element_by_id('easyEntryDataSaveButton')
-
-        if self.isSave.isChecked():
-            save_button.click()
-            print("Saved successfully")
+        self.driver.get(f'https://believebackstage.com/easyentry/promotion/edit/{release_number}')
 
     def fill_form(self):
 
-        self.release_number = self.findChild(QtWidgets.QLineEdit, 'releaseNumberInput').text()
+        string_input = self.findChild(QtWidgets.QLineEdit, 'releaseNumberInput').text()
 
-        if self.release_number:
+        if string_input:
+
+            self.driver.switch_to.window(self.driver.window_handles[0])
+
+            if 'https:' in string_input:
+                release_number = string_input.split('/')[-2]
+                self.releaseNumberInput.setText(release_number)
+            else:
+                release_number = string_input
+
             self.message.setText('')
-            self.navigate_to_release(self.release_number)
-            self.fill_in_form()
+            self.navigate_to_release(release_number)
 
-        else:
-            self.message.setText('Please input release number')
+            WebDriverWait(self.driver, 100).until(
+                EC.presence_of_element_located((By.ID, 'linksFacebook'))
+            )
+
+            english_textarea_class = self.driver.find_element_by_class_name('inputBehavior-2')
+            english_textarea_id = english_textarea_class.get_attribute('id')
+
+            id_number_only = int(english_textarea_id.split('-')[1])
+
+            english_textarea = self.driver.find_element_by_id((f'description-{id_number_only + 2}-easyEntryEditForm'))
+            chinese_textarea = self.driver.find_element_by_id(f'description-{id_number_only}-easyEntryEditForm')
+
+            english_textarea.clear()
+            chinese_textarea.clear()
+
+            english_textarea.send_keys(
+                'Isaac Yong is a singer-songwriter based in Singapore. He draws songwriting inspiration from stories around him, as well as through his personal experience. His voice is described as warm and soothing. Being a content creator, he also releases covers on various platforms, most notably through his style of combining singing with fingerstyle guitar, often playing different parts simultaneously with just one guitar.')
+            chinese_textarea.send_keys(
+                '杨征宇是来自新加坡的创作歌手。他的创作灵感来源于身边发生故事，也有的是源自于自己生活中的经历和情感。听众形容他”拥有一把温暖、让人觉得舒服的声音“。他也在各大不同的影音平台发行翻唱。他擅长把流行音乐结合指弹吉他，很多时候仅用一把吉他就能够弹唱时同时演奏多个声部。')
+
+            for platform in self.social_media_array:
+                self.driver.find_element_by_id(platform.id).clear()
+                self.driver.find_element_by_id(platform.followers_id).clear()
+                self.driver.find_element_by_id(platform.id).send_keys(platform.link)
+                self.driver.find_element_by_id(platform.followers_id).send_keys(platform.followers)
+
+            save_button = self.driver.find_element_by_id('easyEntryDataSaveButton')
+
+            if self.isSave.isChecked():
+                save_button.click()
+                print("Saved successfully")
+
+            else:
+                self.message.setText('Please input release number')
 
     def exit(self):
         self.driver.quit()
